@@ -53,6 +53,9 @@ export default function Home() {
           Get Started
         </Button>
       </Box>
+      <Box width="100%" sx={{display:'flex', justifyContent:'center' , alignItems:'center'}}>
+        <Button textAlign="center" variant="contained" href="/generate">Go Directly To Dashboard</Button>
+        </Box>
       <Box sx={{ my: 6 }}>
         <Typography variant="h2" components="h2">
           Features
