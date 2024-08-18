@@ -1,6 +1,7 @@
 import React from "react";
 import Script from "next/script";
 
+
 const GoogleAnalytics = () => {
   const GA_ID = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID;
 
@@ -16,11 +17,12 @@ const GoogleAnalytics = () => {
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
-          gtag('config', ${GA_ID}); 
+          gtag('config', '${GA_ID}');
         `}
       </Script>
     </>
   );
 };
+
 
 export default GoogleAnalytics;
