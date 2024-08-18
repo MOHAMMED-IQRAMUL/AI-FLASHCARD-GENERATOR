@@ -1,6 +1,6 @@
 import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
-import { GoogleAnalytics } from "../components/GoogleAnalytics.js";
+import GoogleAnalytics from '../components/GoogleAnalytics.js';
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
