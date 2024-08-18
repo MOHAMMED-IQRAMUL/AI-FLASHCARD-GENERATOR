@@ -1,11 +1,38 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 *{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  
+}
+body{
+  /* background-color: black; */
 }
 
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
+.animate-fade-in-down {
+  animation: fadeInDown 0.5s ease-out;
+}
+@layer utilities {
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+  .perspective {
+    perspective: 1000px;
+  }
+  .rotate-y-180 {
+    transform: rotateY(180deg);
+  }
+}
