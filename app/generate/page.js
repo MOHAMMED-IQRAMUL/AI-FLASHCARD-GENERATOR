@@ -118,9 +118,9 @@ export default function Generante() {
     setOpenAlert(true);
     setTimeout(() => {
       router.push("/dashboard");
-    }, 2000);
+    }, 2000);   
   };
-
+  
   return (
     <Box width="100vw" height="100vh" fontFamily="monospace">
       <div className="static top-0 w-full min-h-[80px] text-black ">

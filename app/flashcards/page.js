@@ -6,7 +6,7 @@ import { db } from "../../firebase.js";
 import { collection, doc, getDoc, setDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import {
-    Box,
+  Box,
   Button,
   Card,
   CardActionArea,
@@ -40,11 +40,19 @@ export default function Flashcard() {
   }, [user]);
 
   if (!isLoaded || !isSignedIn) {
-    return <Box width="100vw" height="100vh" sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center"
-    }}>Loading...</Box>;
+    return (
+      <Box
+        width="100vw"
+        height="100vh"
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        Loading...
+      </Box>
+    );
   }
 
   const handleCardClick = (id) => {
@@ -53,7 +61,7 @@ export default function Flashcard() {
 
   return (
     <Container maxWidth="100vw">
-       <div className="static top-0 w-full min-h-[100px] text-black flex justify-between items-center">
+      <div className="static top-0 w-full min-h-[100px] text-black flex justify-between items-center">
         <div>
           <Typography
             fontWeight="bold"
@@ -65,37 +73,39 @@ export default function Flashcard() {
               FlashLearn
             </Link>
           </Typography>
-          </div>
-          <div className="m flex gap-10">
-            <p><Button href='/dashboard'>Dashboard</Button></p>
-            <p><Button href='/generate'>Generate</Button></p>
-          </div>
-          <div >
-            <UserButton />
-          </div>
-        
+        </div>
+        <div className="m flex gap-10">
+          <p>
+            <Button href="/dashboard">Dashboard</Button>
+          </p>
+          <p>
+            <Button href="/generate">Generate</Button>
+          </p>
+        </div>
+        <div>
+          <UserButton />
+        </div>
       </div>
       <Box className="w-full">
-       
-      <Typography fontFamily='monospace' variant="h4" sx={{ mt: 4, mb: 2 }}>
-        Choose a flashcard set
-      </Typography>
-         
-      <Grid container spacing={3} sx={{ mt: 4 }}>
-        {flashcards.map((flashcard, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index}>
-            <Card>
-              <CardActionArea onClick={() => handleCardClick(flashcard.name)}>
-                <CardContent>
-                  <Typography fontFamily='monospace' variant="h6">
-                    {flashcard.name}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+        <Typography fontFamily="monospace" variant="h4" sx={{ mt: 4, mb: 2 }}>
+          Choose a flashcard set
+        </Typography>
+
+        <Grid container spacing={3} sx={{ mt: 4 }}>
+          {flashcards.map((flashcard, index) => (
+            <Grid item xs={12} sm={6} md={4} key={index}>
+              <Card>
+                <CardActionArea onClick={() => handleCardClick(flashcard.name)}>
+                  <CardContent>
+                    <Typography fontFamily="monospace" variant="h6">
+                      {flashcard.name}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
       </Box>
     </Container>
   );
