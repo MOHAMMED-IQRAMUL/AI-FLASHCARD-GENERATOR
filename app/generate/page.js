@@ -11,7 +11,7 @@ import {
   collection,
   writeBatch,
 } from "firebase/firestore";
-import Link from "next/link";
+import Image from "next/image.js";
 
 export default function Generate() {
   const { isLoaded, isSignedIn, user } = useUser();
