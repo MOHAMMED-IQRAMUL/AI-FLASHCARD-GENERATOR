@@ -17,7 +17,7 @@ export default function SignInPage() {
 
   
   return ( 
-    <Container maxWidth="sm">
+    <Container maxWidth="sm" className="">
         <div className="static top-0 w-full min-h-[100px] text-black flex justify-between items-center">
         <div>
           <Typography

@@ -11,30 +11,9 @@ import {
   collection,
   writeBatch,
 } from "firebase/firestore";
-import LinearProgress from "@mui/material/LinearProgress";
-import {
-  Container,
-  Box,
-  Typography,
-  Paper,
-  TextField,
-  Button,
-  Grid,
-  Card,
-  CardActionArea,
-  CardContent,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-  Toolbar,
-  Snackbar,
-  Alert
-} from "@mui/material";
-import Link from "next/link.js";
+import Link from "next/link";
 
-export default function Generante() {
+export default function Generate() {
   const { isLoaded, isSignedIn, user } = useUser();
   const [flashcards, setFlashcards] = useState([]);
   const [flipped, setFlipped] = useState([]);
@@ -54,14 +33,11 @@ export default function Generante() {
 
   const handleSubmit = async () => {
     setIsFetching(true);
-
     fetch("api/generate", {
       method: "POST",
       body: text,
     })
-      .then((res) => {
-        return res.json();
-      })
+      .then((res) => res.json())
       .then((data) => {
         setFlashcards(data);
         setIsFetching(false);
@@ -75,13 +51,8 @@ export default function Generante() {
     }));
   };
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const saveFlashcards = async () => {
     if (!name) {
@@ -122,190 +93,122 @@ export default function Generante() {
   };
   
   return (
-    <Box width="100vw" height="100vh" fontFamily="monospace">
-      <div className="static top-0 w-full min-h-[80px] text-black ">
-        <Toolbar>
-          <Typography
-            fontWeight="bold"
-            sx={{ color: "#0A695E" }}
-            variant="h6"
-            style={{ flexGrow: 1 }}
+    <div className="min-h-screen bg-gray-900 text-gray-100 font-mono">
+      <nav className="fixed top-0 w-full bg-black bg-opacity-50 backdrop-filter backdrop-blur-lg z-10">
+        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+          <h1 className="text-2xl font-bold text-teal-400 hover:text-teal-300 transition-colors duration-300">
+          <a href="/dashboard"><img src="/logo.png" alt="logo" className="w-36" /></a>
+          </h1>
+          <UserButton />
+        </div>
+      </nav>
+
+      <main className="container mx-auto px-4 pt-24 pb-12">
+        <h2 className="text-4xl font-bold text-center mb-8 text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">
+          Generate Flashcards
+        </h2>
+
+        <div className="bg-gray-800 rounded-xl shadow-lg p-6 mb-8">
+          <textarea
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            placeholder="Enter Text"
+            className="w-full p-3 mb-4 bg-gray-700 text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+            rows="4"
+          />
+          <button
+            onClick={handleSubmit}
+            disabled={isFetching}
+            className="w-1/3 py-3 bg-gradient-to-r from-teal-500 to-blue-500 text-white rounded-full font-bold text-lg hover:from-teal-400 hover:to-blue-400 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <Link href="/dashboard" passHref>
-              FlashLearn
-            </Link>
-          </Typography>
-          <div className="c flex gap-10">
-            <UserButton />
-          </div>
-        </Toolbar>
-      </div>
-
-      <Container maxWidth="md" sx={{ mx: "auto" }}>
-        <Box
-          sx={{
-            mt: 4,
-            mb: 6,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Typography fontFamily="monospace" variant="h4">
-            Generate Flashcards
-          </Typography>
-
-          <Paper sx={{ p: 4, width: "100%" }}>
-            <TextField
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              label="Enter Text"
-              fullWidth
-              multiline
-              rows={4}
-              variant="outlined"
-              sx={{ mb: 2 }}
-            />
-            <Button
-              variant="contained"
-              color="primary"
-              fullWidth
-              fontFamily="monospace"
-              sx={{
-                mt: 2,
-                "&:hover": {
-                  border: "1px solid rgb(234, 106, 116)",
-                  bgcolor: "#fff5d7",
-                  color: "#e3460e",
-                },
-              }}
-              className="bg-Coral_Pink font-mono"
-              onClick={handleSubmit}
-              disabled={isFetching}
-            >
-              <Typography sx={{ fontSize: "20px" }}>Submit</Typography>
-            </Button>
-            {isFetching && <LinearProgress color="success" />}
-          </Paper>
-        </Box>
+            Submit
+          </button>
+          {isFetching && (
+            <div className="mt-4 w-full h-2 bg-gray-700 rounded-full overflow-hidden">
+              <div className="h-full bg-teal-400 animate-pulse"></div>
+            </div>
+          )}
+        </div>
 
         {flashcards.length > 0 && (
-          <Box sx={{ mt: 4 }}>
-            <Typography fontFamily="monospace" variant="h5">
-              Flashcards Preview
-            </Typography>
-
-            <Grid container spacing={2}>
+          <div className="mt-8">
+            <h3 className="text-2xl font-bold mb-4">Flashcards Preview</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {flashcards.map((flashcard, index) => (
-                <Grid item xs={12} sm={6} md={4} key={index}>
-                  <CardActionArea onClick={() => handleCardClick(index)}>
-                    <CardContent>
-                      <Box
-                        sx={{
-                          perspective: "1000px",
-                          "& > div": {
-                            transition: "transform 0.6s",
-                            transformStyle: "preserve-3d",
-                            position: "relative",
-                            width: "100%",
-                            height: "200px",
-                            boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)",
-                            transform: flipped[index]
-                              ? "rotateY(180deg)"
-                              : "rotateY(0deg)",
-                          },
-                          "& > div > div": {
-                            position: "absolute",
-                            width: "100%",
-                            height: "100%",
-                            backfaceVisibility: "hidden",
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            padding: 2,
-                            boxSizing: "border-box",
-                          },
-                          "& > div > div:nth-of-type(2)": {
-                            transform: "rotateY(180deg)",
-                          },
-                        }}
-                      >
-                        <div>
-                          <div>
-                            <Typography
-                              fontFamily="monospace"
-                              variant="h5"
-                              component="div"
-                            >
-                              {flashcard.front}
-                            </Typography>
-                          </div>
-                          <div>
-                            <Typography
-                              fontFamily="monospace"
-                              variant="h5"
-                              component="div"
-                            >
-                              {flashcard.back}
-                            </Typography>
-                          </div>
-                        </div>
-                      </Box>
-                    </CardContent>
-                  </CardActionArea>
-                </Grid>
+                <div
+                  key={index}
+                  className="bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer"
+                  onClick={() => handleCardClick(index)}
+                >
+                  <div className="relative w-full h-48" style={{ perspective: '1000px' }}>
+                    <div
+                      className={`absolute inset-0 w-full h-full transition-transform duration-500 transform-gpu ${flipped[index] ? "rotate-y-180" : ""}`}
+                      style={{ transformStyle: 'preserve-3d' }}
+                    >
+                      {/* Front Side */}
+                      <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-teal-500 to-blue-500 rounded-xl flex items-center justify-center p-4" style={{ backfaceVisibility: 'hidden' }}>
+                        <p className="text-lg font-bold">{flashcard.front}</p>
+                      </div>
+        
+                      {/* Back Side */}
+                      <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center p-4 rotate-y-180" style={{ backfaceVisibility: 'hidden' }}>
+                        <p className="text-lg">{flashcard.back}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               ))}
-            </Grid>
-            <Box
-              sx={{
-                mt: 4,
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
-              <Button
-                variant="contained"
-                color="secondary"
+            </div>
+            <div className="mt-8 flex justify-center">
+              <button
                 onClick={handleOpen}
+                className="px-6 py-3 bg-gradient-to-r from-green-500 to-teal-500 text-white rounded-full font-bold text-lg hover:from-green-400 hover:to-teal-400 transition-all duration-300 transform hover:scale-105"
               >
                 Save
-              </Button>
-            </Box>
-          </Box>
+              </button>
+            </div>
+          </div>
         )}
 
-        <Dialog open={open} onClose={handleClose}>
-          <DialogTitle>Save Flashcards</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Please Enter a name for your flashcards collection
-              <TextField
-                autoFocus
-                margin="dense"
-                label="Collection Name"
+        {open && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-gray-800 rounded-xl p-6 w-96">
+              <h4 className="text-2xl font-bold mb-4">Save Flashcards</h4>
+              <p className="mb-4">
+                Please enter a name for your flashcards collection
+              </p>
+              <input
                 type="text"
-                fullWidth
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                variant="outlined"
+                placeholder="Collection Name"
+                className="w-full p-3 mb-4 bg-gray-700 text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
               />
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button disabled={saving} onClick={saveFlashcards}>Save</Button>
-          </DialogActions>
-        </Dialog>
-        <Snackbar
-      open={openAlert}
-      autoHideDuration={2000}
-      onClose={() => setOpenAlert(false)}
-    >
-      <Alert onClose={() => setOpenAlert(false)} severity="success" sx={{ width: '100%' }}>
-      Flashcards saved successfully, Redirecting to Dashboard
-      </Alert>
-    </Snackbar>
-      </Container>
-    </Box>
+              <div className="flex justify-end gap-4">
+                <button
+                  onClick={handleClose}
+                  className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-500 transition-colors duration-300"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={saveFlashcards}
+                  disabled={saving}
+                  className="px-4 py-2 bg-teal-500 text-white rounded-md hover:bg-teal-400 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {openAlert && (
+          <div className="fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-md shadow-lg">
+            Flashcards saved successfully, Redirecting to Dashboard
+          </div>
+        )}
+      </main>
+    </div>
   );
 }

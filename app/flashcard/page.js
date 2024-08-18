@@ -6,16 +6,6 @@ import { db } from "../../firebase.js";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 
 import { useSearchParams } from "next/navigation.js";
-import {
-  Container,
-  Box,
-  Button,
-  CardActionArea,
-  CardContent,
-  Grid,
-  Typography,
-  Toolbar,
-} from "@mui/material";
 import Link from "next/link.js";
 
 export default function Flashcard() {
@@ -51,108 +41,78 @@ export default function Flashcard() {
 
   if (!isLoaded || !isSignedIn) {
     return (
-      <Box
-        width="100vw"
-        height="100vh"
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+      <div className="w-full h-screen flex justify-center items-center bg-gray-900 text-gray-100">
         Loading...
-      </Box>
+      </div>
     );
   }
 
   return (
-    <Container maxWidth="100vw">
-         <div className="static top-0 w-full min-h-[100px] text-black flex justify-between items-center">
+    <div className="w-full min-h-screen bg-gray-900 text-gray-100">
+      <header className="static top-0 w-full min-h-[100px] flex justify-between items-center px-8 py-4 bg-black bg-opacity-50 backdrop-filter backdrop-blur-lg z-10">
         <div>
-          <Typography
-            fontWeight="bold"
-            sx={{ color: "#0A695E" }}
-            variant="h6"
-            style={{ flexGrow: 1 }}
-          >
-            <Link href="/dashboard" passHref>
-              FlashLearn
-            </Link>
-          </Typography>
-          </div>
-          <div className="m flex gap-10 font-mono">
-            <p><Button  href='/dashboard'>
-            <Typography fontFamily='monospace'>
-            Dashboard </Typography></Button></p>
-            <p><Button  href='/generate'>
-            <Typography fontFamily='monospace'>
-            Generate </Typography></Button></p>
-            <p><Button  href='/flashcards'>
-            <Typography fontFamily='monospace'>
-            Collection </Typography></Button></p>
-          </div>
-          <div >
-            <UserButton />
-          </div>
-        
-      </div>
-      <Box>
-      <Grid container spacing={3} sx={{ mt: 4 }}>
-        {flashcards.map((flashcard, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index}>
-            <CardActionArea onClick={() => handleCardClick(index)}>
-              <CardContent>
-                <Box
-                  sx={{
-                    perspective: "1000px",
-                    "& > div": {
-                      transition: "transform 0.6s",
-                      transformStyle: "preserve-3d",
-                      position: "relative",
-                      width: "100%",
-                      height: "200px",
-                      boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)",
-                      transform: flipped[index]
-                        ? "rotateY(180deg)"
-                        : "rotateY(0deg)",
-                    },
-                    "& > div > div": {
-                      position: "absolute",
-                      width: "100%",
-                      height: "100%",
-                      backfaceVisibility: "hidden",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      padding: 2,
-                      boxSizing: "border-box",
-                    },
-                    "& > div > div:nth-of-type(2)": {
-                      transform: "rotateY(180deg)",
-                    },
-                  }}
-                >
-                  <div>
-                    <div>
-                      <Typography fontFamily='monospace'
+          <Link href="/dashboard" passHref>
+            <h1 className="text-2xl font-bold text-teal-400 hover:text-teal-300 transition-colors duration-300">
+            <a href="/dashboard"><img src="/logo.png" alt="logo" className="w-36" /></a>
+            </h1>
+          </Link>
+        </div>
+        <div className="flex gap-10 font-mono">
+          <Link href="/dashboard">
+            <button className="text-gray-300 hover:text-teal-300 transition-colors duration-300">
+              Dashboard
+            </button>
+          </Link>
+          <Link href="/generate">
+            <button className="text-gray-300 hover:text-teal-300 transition-colors duration-300">
+              Generate
+            </button>
+          </Link>
+          <Link href="/flashcards">
+            <button className="text-gray-300 hover:text-teal-300 transition-colors duration-300">
+              Collection
+            </button>
+          </Link>
+        </div>
+        <UserButton />
+      </header>
 
-  variant="h5" component="div">
-                        {flashcard.front}
-                      </Typography>
-                    </div>
-                    <div>
-                      <Typography fontFamily='monospace' variant="h5" component="div">
-                        {flashcard.back}
-                      </Typography>
+      <main className="container mx-auto px-4 py-8">
+        
+          {flashcards.length > 0 && (
+          <div className="mt-8">
+            <h3 className="text-2xl font-bold mb-4">Flashcards Preview</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {flashcards.map((flashcard, index) => (
+                <div
+                  key={index}
+                  className="bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer"
+                  onClick={() => handleCardClick(index)}
+                >
+                  <div className="relative w-full h-48" style={{ perspective: '1000px' }}>
+                    <div
+                      className={`absolute inset-0 w-full h-full transition-transform duration-500 transform-gpu ${flipped[index] ? "rotate-y-180" : ""}`}
+                      style={{ transformStyle: 'preserve-3d' }}
+                    >
+                      {/* Front Side */}
+                      <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-teal-500 to-blue-500 rounded-xl flex items-center justify-center p-4" style={{ backfaceVisibility: 'hidden' }}>
+                        <p className="text-lg font-bold">{flashcard.front}</p>
+                      </div>
+        
+                      {/* Back Side */}
+                      <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center p-4 rotate-y-180" style={{ backfaceVisibility: 'hidden' }}>
+                        <p className="text-lg">{flashcard.back}</p>
+                      </div>
                     </div>
                   </div>
-                </Box>
-              </CardContent>
-            </CardActionArea>
-          </Grid>
-        ))}
-      </Grid>
-      </Box>
-    </Container>
+                </div>
+              ))}
+            </div>
+           
+          </div>
+        )}
+       
+      </main>
+    </div>
   );
 }

@@ -1,5 +1,5 @@
 "use client";
-
+import Image from 'next/image';
 import {
   AppBar,
   Container,
@@ -25,7 +25,7 @@ export default function Home() {
     });
 
     const checkoutSessionJson = await response.json();
-
+    console.log("response", checkoutSessionJson);
     if (response.statusCode === 500) {
       console.error(checkoutSessionJson.error.message);
 
@@ -41,462 +41,312 @@ export default function Home() {
     }
   };
   return (
-    <div className="font-mono">
-      <div
-        position="static"
-        sx={{ width: "100%", backgroundColor: "White", color: "black" }}
-      >
-        <Toolbar>
-          <Typography
-            fontWeight="bold"
-            sx={{ color: "#0A695E" }}
-            variant="h6"
-            style={{ flexGrow: 1 }}
-          >
-            <Link href="/" passHref>
-              FlashLearn
-            </Link>
-          </Typography>
-          <div className="flex gap-5">
-            <SignedOut>
-              <Button
-                variant="outlined"
-                color="inherit"
-                href="/sign-in"
-                sx={{
-                  "&:hover": {
-                    border: "1px solid rgb(234, 106, 116)",
-                    bgcolor: "#fff5d7",
-                    color: "#e3460e",
-                  },
-                }}
-              >
-                Sign In
-              </Button>
-              <Button
-                variant="outlined"
-                color="inherit"
-                href="/sign-up"
-                sx={{
-                  "&:hover": {
-                    border: "1px solid rgb(234, 106, 116)",
-                    bgcolor: "#fff5d7",
-                    color: "#e3460e",
-                  },
-                }}
-              >
-                Sign Up
-              </Button>
-            </SignedOut>
+    <div className="font-sans bg-gray-900 text-gray-100">
+      <nav className="bg-black bg-opacity-50 backdrop-filter backdrop-blur-lg fixed w-full z-10">
+        <div className="container mx-auto px-4">
+          <div className="flex justify-between items-center py-4">
+            <h1 className="text-2xl font-bold text-teal-400 hover:text-teal-300 transition-colors duration-300">
+              <a href="/"><img src="/logo.png" alt="logo" className="w-36" /></a>
+            </h1>
+            <div className="flex gap-4">
+              <SignedOut>
+                <a
+                  href="/sign-in"
+                  className="px-4 py-2 bg-teal-500 text-black rounded-full hover:bg-teal-400 transition-all duration-300 transform hover:scale-105"
+                >
+                  Sign In
+                </a>
+                <a
+                  href="/sign-up"
+                  className="px-4 py-2 border border-teal-500 text-teal-500 rounded-full hover:bg-teal-500 hover:text-black transition-all duration-300 transform hover:scale-105"
+                >
+                  Sign Up
+                </a>
+              </SignedOut>
+              <SignedIn>
+                <UserButton />
+              </SignedIn>
+            </div>
           </div>
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
-        </Toolbar>
-      </div>
-      <Container
-        maxWidth="100vw"
-        sx={{ color: "#573d1c", fontFamily: "monospace" }}
-        className="font-mono"
-      >
-        <Box
-          sx={{
-            textAlign: "center",
-            my: 4,
-          }}
-        >
-          <Typography
-            variant="h2"
-            sx={{ color: "#99e1d9", fontFamily: "cursive" }}
-          >
+        </div>
+      </nav>
+
+      <main className="container mx-auto px-4 pt-24">
+        <section className="text-center my-16 animate-fade-in-down">
+          <h1 className="text-6xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">
             Welcome To FlashLearn
-          </Typography>
-          <Typography variant="h5" className="font-mono">
-            Here You Can Create Flashcard From Your Text Easily
-          </Typography>
-          <Button
-            variant="contained"
-            sx={{
-              mt: 2,
-              "&:hover": {
-                border: "1px solid rgb(234, 106, 116)",
-                bgcolor: "#fff5d7",
-                color: "#e3460e",
-              },
-            }}
-            className="bg-Coral_Pink font-mono"
+          </h1>
+          <p className="text-xl mb-8 text-gray-400">
+            Create Flashcards Effortlessly from Your Text
+          </p>
+          <a
             href="/dashboard"
+            className="inline-block px-8 py-3 bg-gradient-to-r from-teal-500 to-blue-500 text-white rounded-full hover:from-teal-400 hover:to-blue-400 transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
           >
             Get Started
-          </Button>
-        </Box>
-        <Box
-        // sx={{ my: 6 }}
-        >
-          <Typography variant="h2" components="h2" className="font-mono">
+          </a>
+        </section>
+
+        <section className="my-24">
+          <h2 className="text-4xl mb-12 text-center font-bold text-teal-400">
             Features
-          </Typography>
-          <Grid container spacing={4}>
-            <Grid
-              className="min-h-[200px] flex justify-center   align-middle"
-              item
-              xs={12}
-              md={4}
-            >
-              <Box
-                className="font-mono"
-                sx={{
-                  p: 3,
-                  border: "1px solid #ddd",
-                  borderRadius: "8px",
-                  fontFamily: "monospace",
-                }}
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              "AI-Powered Creation",
+              "Interactive Learning",
+              "Progress Tracking",
+            ].map((feature, index) => (
+              <div
+                key={index}
+                className="p-6 bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
               >
-                <Typography className="font-mono" variant="h6">
-                  Easy Text Input
-                </Typography>
-                <Typography className="font-mono" variant="body1">
-                  Simply input your text, and our system will generate
-                  flashcards automatically.
-                </Typography>
-              </Box>
-            </Grid>
+                <div className="text-4xl mb-4 text-teal-400">
+                  {["🧠", "🔄", "📊"][index]}
+                </div>
+                <h3 className="text-xl font-semibold mb-3 text-teal-300">
+                  {feature}
+                </h3>
+                <p className="text-gray-400">
+                  Experience next-gen learning with our cutting-edge features
+                  designed to enhance your study sessions.
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
 
-            <Grid
-              className="min-h-[200px] flex justify-center   align-middle"
-              item
-              xs={12}
-              md={4}
-            >
-              <Box sx={{ p: 3, border: "1px solid #ddd", borderRadius: "8px" }}>
-                <Typography variant="h6" className="font-mono">
-                  Customizable Cards
-                </Typography>
-                <Typography variant="body1" className="font-mono">
-                  Customize the appearance of your flashcards with our
-                  easy-to-use interface.
-                </Typography>
-              </Box>
-            </Grid>
-
-            <Grid
-              className="min-h-[200px] flex justify-center   align-middle"
-              item
-              xs={12}
-              md={4}
-            >
-              <Box sx={{ p: 3, border: "1px solid #ddd", borderRadius: "8px" }}>
-                <Typography variant="h6" className="font-mono">
-                  Customizable Cards
-                </Typography>
-                <Typography variant="body1" className="font-mono">
-                  Customize the appearance of your flashcards with our
-                  easy-to-use interface.
-                </Typography>
-              </Box>
-            </Grid>
-          </Grid>
-        </Box>
-
-        <Box sx={{ my: 6, textAlign: "center" }}>
-          <Typography className="font-mono" variant="h4">
+        <section className="my-24 text-center">
+          <h2 className="text-4xl mb-2 font-bold text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">
             Pricing
-          </Typography>
+          </h2>
+          <p className="text-xl text-gray-400 mb-12">
+            Choose Your Learning Journey
+          </p>
 
-          <Typography
-            className="font-mono"
-            variant="h4"
-            component="h2"
-            gutterBottom
-          >
-            Simple and Affordable Pricing
-          </Typography>
-
-          <Typography
-            className="font-mono"
-            variant="h6"
-            color="textSecondary"
-            gutterBottom
-          >
-            Choose a plan that fits your needs.
-          </Typography>
-
-          <Grid container spacing={4} sx={{ mt: 4 }}>
-            {/* {Free Plan} */}
-            <Grid
-              className="min-h-[300px] flex justify-center   align-middle"
-              item
-              xs={12}
-              sm={4}
-            >
-              <Box
-                sx={{
-                  minheight: "200px",
-                  p: 3,
-                  border: "1px solid #ddd",
-                  borderRadius: "8px",
-                  fontFamily: "monospace",
-                }}
-                className="font-mono"
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                name: "Basic",
+                price: "Free",
+                color: "from-gray-600 to-gray-700",
+                features: ["Limited Storage", "Basic Support"],
+              },
+              {
+                name: "Pro",
+                price: "$5/month",
+                color: "from-teal-600 to-blue-600",
+                features: ["Increased Storage", "Priority Support"],
+              },
+              {
+                name: "Enterprise",
+                price: "Custom",
+                color: "from-purple-600 to-pink-600",
+                features: ["Advanced Security", "Dedicated Account Manager"],
+              },
+            ].map((plan, index) => (
+              <div
+                key={index}
+                className={`p-6 rounded-2xl shadow-xl transition-all duration-300 transform hover:scale-105 bg-gradient-to-br ${plan.color}`}
               >
-                <Typography
-                  className="font-mono"
-                  variant="h5"
-                  component="h3"
-                  gutterBottom
-                >
-                  Basic
-                </Typography>
-
-                <Typography
-                  className="font-mono"
-                  variant="h6"
-                  color="primary"
-                  gutterBottom
-                >
-                  Free
-                </Typography>
-
-                <Typography className="font-mono" variant="body1">
-                  Perfect for students and casual learners.
-                </Typography>
-
-                <Typography variant="body1" sx={{ mt: 2 }}>
-                  Basic Features and Limited Storage
-                </Typography>
-
-                <Button
-                  variant="contained"
-                  className="bg-Coral_Pink font-mono"
-                  sx={{
-                    mt: 2,
-                    "&:hover": {
-                      border: "1px solid rgb(234, 106, 116)",
-                      bgcolor: "#fff5d7",
-                      color: "#e3460e",
-                    },
-                  }}
-                  href="/dashboard"
-                >
-                  Get Started
-                </Button>
-              </Box>
-            </Grid>
-
-            {/* {Pro} */}
-            <Grid
-              className="min-h-[300px] flex justify-center   align-middle"
-              item
-              xs={12}
-              sm={4}
-            >
-              <Box
-                sx={{
-                  minheight: "200p",
-                  p: 3,
-                  border: "1px solid #ddd",
-                  borderRadius: "8px",
-                }}
-              >
-                <Typography
-                  className="font-mono"
-                  variant="h5"
-                  component="h3"
-                  gutterBottom
-                >
-                  Pro
-                </Typography>
-                <Typography
-                  className="font-mono"
-                  variant="h6"
-                  color="primary"
-                  gutterBottom
-                >
-                  $5/month
-                </Typography>
-                <Typography className="font-mono" variant="body1">
-                  For professionals and power users.
-                </Typography>
-                <Typography
-                  className="font-mono"
-                  variant="body1"
-                  sx={{ mt: 2 }}
-                >
-                  More accurate and Unlimited Storage
-                </Typography>
-                <Button
-                  variant="contained"
-                  className="bg-Coral_Pink font-mono"
-                  sx={{
-                    mt: 2,
-                    "&:hover": {
-                      border: "1px solid rgb(234, 106, 116)",
-                      bgcolor: "#fff5d7",
-                      color: "#e3460e",
-                    },
-                  }}
-                  onClick={() => handleSubmit("pro")}
-                >
-                  Choose Pro
-                </Button>
-              </Box>
-            </Grid>
-
-            {/* {Group} */}
-            <Grid
-              className="min-h-[300px] flex justify-center   align-middle"
-              item
-              xs={12}
-              sm={4}
-            >
-              <Box
-                sx={{
-                  minheight: "200px",
-                  p: 3,
-                  border: "1px solid #ddd",
-                  borderRadius: "8px",
-                }}
-              >
-                <Typography
-                  className="font-mono"
-                  variant="h5"
-                  component="h3"
-                  gutterBottom
-                >
-                  Enterprise
-                </Typography>
-                <Typography
-                  className="font-mono"
-                  variant="h6"
-                  color="primary"
-                  gutterBottom
-                >
-                  Contact Us
-                </Typography>
-                <Typography className="font-mono" variant="body1">
-                  Custom solutions for large organizations.
-                </Typography>
-                <Typography
-                  className="font-mono"
-                  variant="body1"
-                  sx={{ mt: 2 }}
-                >
-                  Multiple Users and Unlimited Storage
-                </Typography>
-                <Button
-                  variant="outlined"
-                  sx={{
-                    mt: 2,
-                    "&:hover": {
-                      border: "1px solid rgb(234, 106, 116)",
-                      bgcolor: "#fff5d7",
-                      color: "#e3460e",
-                    },
-                  }}
-                  className="text-Coral_Pink border-Coral_Pink font-mono"
-                >
-                  Contact Sales
-                </Button>
-              </Box>
-            </Grid>
-          </Grid>
-          <Typography className="font-mono">
-            Here The Payment Gateway is Working very Fine But We Are Unable To
-            Map With User Account
-          </Typography>
-          <Typography className="font-mono">
-            Since the project is in Test Mode, So for Sucessfull Payment Use
-          </Typography>
-          <Typography className="font-mono">
-            Card Number: 4242 4242 4242 4242 Expiration Date: Any valid future
-            date (e.g., 12/34) CVC: Any 3 digits (e.g., 123)
-          </Typography>
-        </Box>
-      </Container>
-      <Box
-        component="footer"
-        sx={{
-          bgcolor: "#f5f5f5",
-          py: 4,
-          mt: "auto",
-          borderTop: "1px solid #ddd",
-        }}
-        className="bg-gray-100"
+                <h4 className="text-2xl font-bold mb-2">{plan.name}</h4>
+                <p className="text-3xl font-bold mb-6">{plan.price}</p>
+                <ul className="mb-8 text-left">
+                  {plan.features.map((feature, i) => (
+                    <li key={i} className="mb-2 flex items-center">
+                      <svg
+                        className="w-5 h-5 mr-2 text-green-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>{" "}
+                       {feature}
+                    </li>
+                  ))}
+                </ul>
+                <button className="w-full px-6 py-3 bg-white text-gray-900 rounded-full font-bold hover:bg-opacity-90 transition-all duration-300" onClick={() => {
+                  if (plan.name === 'Basic') {
+                    // Navigate to /dashboard
+                    window.location.href = '/dashboard';
+                  } else if (plan.name === 'Pro') {
+                    // Call handleSubmit function with 'pro' argument
+                    handleSubmit('pro');
+                  }
+                }}>
+                  Choose Plan
+                </button>
+              </div>
+            ))}
+          </div>
+        </section>
+        <section className="my-24">
+  <h2 className="text-4xl mb-12 text-center font-bold text-teal-400">
+    Our Team
+  </h2>
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    {[
+      {
+        name: "Ayyan Akbar",
+        role: "Software Engineer",
+        image: "/ayyan.png",
+        github: "https://github.com/raoayyan",
+        linkedin: "http://linkedin.com/in/ayyan-akbar-a13ba4225",
+      },
+      {
+        name: "MOHAMMED IQRAMUL",
+        role: "Full Stack Developer",
+        image: "/Iq.jfif",
+        github: "https://github.com/MOHAMMED-IQRAMUL",
+        linkedin: "https://www.linkedin.com/in/mohammed-iqramul/",
+      },
+      {
+        name: "Hamza Anwar",
+        role: "Security",
+        image: "/avatar-1.png",
+        github: "https://github.com/",
+        linkedin: "https://www.linkedin.com/in/m-hamza-anwar/",
+      },
+      {
+        name: "Emily Davis",
+        role: "Product Manager",
+        image: "/avatar-1.png",
+        github: "https://github.com/",
+        linkedin: "https://linkedin.com/",
+      },
+    ].map((member, index) => (
+      <div
+        key={index}
+        className="p-6 bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 text-center"
       >
-        <Container maxWidth="lg">
-          <Grid container spacing={4} className="text-center md:text-left">
-            <Grid item xs={12} md={4}>
-              <Typography className="font-mono" variant="h6" gutterBottom>
-                About Us
-              </Typography>
-              <Typography
-                className="font-mono"
-                variant="body2"
-                color="textSecondary"
-              >
-                We are a team dedicated to providing the best flashcard
-                solutions.
-              </Typography>
-            </Grid>
-            <Grid className="font-mono" item xs={12} md={4}>
-              <Typography className="font-mono" variant="h6" gutterBottom>
-                Quick Links
-              </Typography>
-              <Box>
-                <Link
-                  href="/"
-                  color="inherit"
-                  onClick={() => router.push("/")}
-                  className="block mb-2"
-                >
-                  Home
-                </Link>
-                <Link href="/features" color="inherit" className="block mb-2">
-                  Features
-                </Link>
-                <Link href="/pricing" color="inherit" className="block mb-2">
-                  Pricing
-                </Link>
-                <Link href="/contact" color="inherit" className="block mb-2">
-                  Contact
-                </Link>
-              </Box>
-            </Grid>
-            <Grid className="font-mono" item xs={12} md={4}>
-              <Typography className="font-mono" variant="h6" gutterBottom>
-                Contact Us
-              </Typography>
-              <Typography
-                className="font-mono"
-                variant="body2"
-                color="textSecondary"
-              >
-                Email:{" "}
-                <Link href="mailto:support@example.com">
-                  support@example.com
-                </Link>
-              </Typography>
-              <Typography
-                className="font-mono"
-                variant="body2"
-                color="textSecondary"
-              >
-                Phone: <Link href="tel:+1234567890">+1 (234) 567-890</Link>
-              </Typography>
-            </Grid>
-          </Grid>
-          <Box sx={{ mt: 4, textAlign: "center" }}>
-            <Typography
-              className="font-mono"
-              variant="body2"
-              color="textSecondary"
+        <img
+          src={member.image}
+          alt={member.name}
+          className="w-24 h-24 rounded-xl mx-auto mb-4"
+        />
+        <h3 className="text-xl font-semibold mb-2 text-teal-300">
+          {member.name}
+        </h3>
+        <p className="text-gray-400 mb-4">{member.role}</p>
+        <div className="flex justify-center space-x-4">
+          <a
+            href={member.github}
+            className="text-gray-400 hover:text-teal-300 transition-colors duration-300"
+          >
+            <svg
+              className="h-6 w-6"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
             >
-              © {new Date().getFullYear()} AI Flashcard Generator. All rights
-              reserved.
-            </Typography>
-          </Box>
-        </Container>
-      </Box>
+              <path
+                fillRule="evenodd"
+                d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.867 8.166 6.839 9.489.5.092.682-.217.682-.483v-1.691c-2.782.605-3.369-1.342-3.369-1.342-.455-1.157-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.03 1.53 1.03.892 1.528 2.341 1.087 2.91.832.092-.647.35-1.086.637-1.337-2.22-.253-4.555-1.11-4.555-4.942 0-1.091.39-1.984 1.03-2.683-.103-.253-.447-1.27.098-2.646 0 0 .841-.27 2.75 1.027a9.577 9.577 0 012.503-.338 9.563 9.563 0 012.503.338c1.908-1.297 2.75-1.027 2.75-1.027.546 1.376.202 2.393.1 2.646.64.699 1.03 1.592 1.03 2.683 0 3.842-2.337 4.685-4.563 4.933.36.31.683.92.683 1.856v2.75c0 .268.182.578.688.481C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </a>
+          <a
+            href={member.linkedin}
+            className="text-gray-400 hover:text-teal-300 transition-colors duration-300"
+          >
+            <svg
+              className="h-6 w-6"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                fillRule="evenodd"
+                d="M19 3A2.997 2.997 0 0116 6a2.997 2.997 0 013 3v12a2.997 2.997 0 01-3 3H5a2.997 2.997 0 01-3-3V9c0-1.657 1.343-3 3-3h11v3H5v12h11V9h2V6h-2a2.997 2.997 0 013-3zm-7 7v10H7V10h5zm-2.5 0c-.828 0-1.5.672-1.5 1.5S8.672 13 9.5 13s1.5-.672 1.5-1.5S10.328 10 9.5 10zM17 10v10h-5V10h5zm-2.5 0c-.828 0-1.5.672-1.5 1.5S13.672 13 14.5 13s1.5-.672 1.5-1.5S15.328 10 14.5 10z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </a>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+      </main>
+
+      <footer className="bg-black bg-opacity-50 py-12 mt-24">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+            <div>
+              <h5 className="text-lg font-semibold mb-4 text-teal-400">
+                About Us
+              </h5>
+              <p className="text-gray-400">
+                Revolutionizing learning through AI-powered flashcards.
+              </p>
+            </div>
+            <div>
+              <h5 className="text-lg font-semibold mb-4 text-teal-400">
+                Quick Links
+              </h5>
+              <ul className="space-y-2">
+                {["Home", "Features", "Pricing", "Contact"].map(
+                  (link, index) => (
+                    <li key={index}>
+                      <a
+                        href={`/${link.toLowerCase()}`}
+                        className="text-gray-400 hover:text-teal-300 transition-colors duration-300"
+                      >
+                        {link}
+                      </a>
+                    </li>
+                  )
+                )}
+              </ul>
+            </div>
+            <div>
+              <h5 className="text-lg font-semibold mb-4 text-teal-400">
+                Connect
+              </h5>
+              <div className="flex justify-center md:justify-start space-x-4">
+                {["twitter", "facebook", "instagram", "github"].map(
+                  (social) => (
+                    <a
+                      key={social}
+                      href={`https://${social}.com`}
+                      className="text-gray-400 hover:text-teal-300 transition-colors duration-300"
+                    >
+                      <span className="sr-only">{social}</span>
+                      <svg
+                        className="h-6 w-6"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </a>
+                  )
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="mt-8 text-center text-gray-400">
+            <p>
+              © {new Date().getFullYear()} FlashLearn AI. Empowering minds, one
+              card at a time.
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
