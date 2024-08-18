@@ -1,3 +1,4 @@
+'use client'
 import { SignIn } from "@clerk/nextjs";
 import {
   AppBar,
@@ -8,26 +9,39 @@ import {
   Typography,
 } from "@mui/material";
 import Link from "next/link";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect } from "react";
  
 export default function SignInPage() {
-  return (
+  const router = useRouter()
+
+  
+  return ( 
     <Container maxWidth="sm">
-      <AppBar position="static" sx={{ backgroundColor: "#3f51b5" }}>
-        <Toolbar>
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
-          <Link href="/" passHref>
-              Flashcard SaaS
+        <div className="static top-0 w-full min-h-[100px] text-black flex justify-between items-center">
+        <div>
+          <Typography
+            fontWeight="bold"
+            sx={{ color: "#0A695E" }}
+            variant="h6"
+            style={{ flexGrow: 1 }}
+          >
+            <Link href="/" passHref>
+              FlashLearn
             </Link>
           </Typography>
+          </div>
+          <div>
           <Button color="inherit">
             <Link href="/sign-up" passHref>
               Sign Up
             </Link>
           </Button>
-        </Toolbar>
-      </AppBar>
-
+          </div>
+          
+        
+      </div>
+     
       <Box
         sx={{
           display: "flex",
@@ -37,8 +51,8 @@ export default function SignInPage() {
           // height: "80vh",
         }}
       >
-        <Typography variant="h4" gutterBottom>
-          Sign In
+        <Typography textAlign='center' fontFamily='monospace' variant="h4" gutterBottom>
+          Please Sign In To Continue To Dashboard
         </Typography>
         <SignIn />
       </Box>

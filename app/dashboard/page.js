@@ -86,7 +86,7 @@ export default function BackButton() {
                     },
                     fontSize: "1.2rem",
                   }}
-                  href="/dashboard"
+                  href="/generate"
                 >
                   GENERATE
                 </Button>
@@ -134,7 +134,7 @@ export default function BackButton() {
                     fontSize: "1.2rem",
                   }}
                   
-                  onClick={() => handleSubmit("pro")}
+                  href='/flashcards'
                 >
                   COLLECTION
                 </Button>

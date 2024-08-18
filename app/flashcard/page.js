@@ -1,6 +1,6 @@
 "use client";
 
-import { useUser } from "@clerk/nextjs";
+import { UserButton, useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import { db } from "../../firebase.js";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
@@ -14,7 +14,9 @@ import {
   CardContent,
   Grid,
   Typography,
+  Toolbar,
 } from "@mui/material";
+import Link from "next/link.js";
 
 export default function Flashcard() {
   const { isLoaded, isSignedIn, user } = useUser();
@@ -65,6 +67,36 @@ export default function Flashcard() {
 
   return (
     <Container maxWidth="100vw">
+         <div className="static top-0 w-full min-h-[100px] text-black flex justify-between items-center">
+        <div>
+          <Typography
+            fontWeight="bold"
+            sx={{ color: "#0A695E" }}
+            variant="h6"
+            style={{ flexGrow: 1 }}
+          >
+            <Link href="/dashboard" passHref>
+              FlashLearn
+            </Link>
+          </Typography>
+          </div>
+          <div className="m flex gap-10 font-mono">
+            <p><Button  href='/dashboard'>
+            <Typography fontFamily='monospace'>
+            Dashboard </Typography></Button></p>
+            <p><Button  href='/generate'>
+            <Typography fontFamily='monospace'>
+            Generate </Typography></Button></p>
+            <p><Button  href='/flashcards'>
+            <Typography fontFamily='monospace'>
+            Collection </Typography></Button></p>
+          </div>
+          <div >
+            <UserButton />
+          </div>
+        
+      </div>
+      <Box>
       <Grid container spacing={3} sx={{ mt: 4 }}>
         {flashcards.map((flashcard, index) => (
           <Grid item xs={12} sm={6} md={4} key={index}>
@@ -102,12 +134,14 @@ export default function Flashcard() {
                 >
                   <div>
                     <div>
-                      <Typography variant="h5" component="div">
+                      <Typography fontFamily='monospace'
+
+  variant="h5" component="div">
                         {flashcard.front}
                       </Typography>
                     </div>
                     <div>
-                      <Typography variant="h5" component="div">
+                      <Typography fontFamily='monospace' variant="h5" component="div">
                         {flashcard.back}
                       </Typography>
                     </div>
@@ -118,6 +152,7 @@ export default function Flashcard() {
           </Grid>
         ))}
       </Grid>
+      </Box>
     </Container>
   );
 }
