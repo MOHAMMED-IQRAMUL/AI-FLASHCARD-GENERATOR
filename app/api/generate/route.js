@@ -55,9 +55,12 @@
 
 import { NextResponse } from "next/server";
 import { GoogleGenAI } from "@google/genai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // Init Gemini client
-const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_GEMINI_API_KEY });
+// const ai = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY);
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY);
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 const systemPrompt = `You are a flashcard creator. Your task is to generate concise and effective flashcards based on the given topic or content. Follow these guidelines:
 
@@ -82,16 +85,29 @@ Return in the following JSON format:
 export async function POST(req) {
   const userPrompt = await req.text();
 
-  const response = await ai.models.generateContent({
-    model: "gemini-2.0-flash",
-    contents: userPrompt,
-    config: {
-      systemInstruction: systemPrompt,
-    },
-  });
+  // const response = await ai.models.generateContent({
+  //   model: "gemini-2.0-flash",
+  //   contents: userPrompt,
+  //   config: {
+  //     systemInstruction: systemPrompt,
+  //   },
+  // });
+  // const model = ai.getGenerativeModel({ model: "gemini-pro" });
+
+  // const response = await model.generateContent([
+  //   { role: "user", parts: [{ text: userPrompt }] },
+  //   { role: "model", parts: [{ text: systemPrompt }] },
+  // ]);
   // console.log("res--> " + response.text);
 
-  const result = response.text;
+  // const result = response.text;
+
+  const response = await model.generateContent(systemPrompt + "\n" + userPrompt, {
+    maxTokens: 1000,  
+    temperature: 0.7
+  });
+
+  const result = response.response.text();
 
   const startIndex = result.indexOf("{");
   const endIndex = result.lastIndexOf("}") + 1;
